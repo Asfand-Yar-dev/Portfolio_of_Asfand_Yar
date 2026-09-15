@@ -50,7 +50,7 @@ export default function MotionSurface({
     <Tag
       className={core ? "compute-core" : "engineering-background"}
       ref={surface}
-      data-motion="paused"
+      data-motion={core ? "pending" : "paused"}
       aria-labelledby={core ? "core-caption" : undefined}
       aria-hidden={core ? undefined : true}
     >

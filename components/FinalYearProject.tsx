@@ -30,6 +30,31 @@ export default function FinalYearProject() {
             <span key={tech}>{tech}</span>
           ))}
         </div>
+      </div>
+      <div className="fyp-workflow" aria-label="Conceptual Intervexa workflow">
+        <p className="eyebrow">INTERVIEW → ANALYSIS → FEEDBACK</p>
+        <ol>
+          <li>
+            <span className="mono">01 / PRACTICE</span>
+            <h4>AI or human-led interview</h4>
+            <p>Adaptive questions · Live video sessions</p>
+          </li>
+          <li>
+            <span className="mono">02 / ANALYZE</span>
+            <h4>Text, voice & visual signals</h4>
+            <p>NLP · Speech processing · Computer vision</p>
+          </li>
+          <li>
+            <span className="mono">03 / REVIEW</span>
+            <h4>Feedback in one place</h4>
+            <p>AI reports · Human evaluation</p>
+          </li>
+        </ol>
+        <p className="mono fyp-architecture">
+          NEXT.JS ↔ EXPRESS / MONGODB ↔ PYTHON AI
+        </p>
+      </div>
+      <div className="fyp-details">
         <AnimatedDetails>
           <summary>
             Explore the technical approach <Icon name="plus" />
@@ -57,29 +82,6 @@ export default function FinalYearProject() {
             </dl>
           </div>
         </AnimatedDetails>
-      </div>
-      <div className="fyp-workflow" aria-label="Conceptual Intervexa workflow">
-        <p className="eyebrow">INTERVIEW → ANALYSIS → FEEDBACK</p>
-        <ol>
-          <li>
-            <span className="mono">01 / PRACTICE</span>
-            <h4>AI or human-led interview</h4>
-            <p>Adaptive questions · Live video sessions</p>
-          </li>
-          <li>
-            <span className="mono">02 / ANALYZE</span>
-            <h4>Text, voice & visual signals</h4>
-            <p>NLP · Speech processing · Computer vision</p>
-          </li>
-          <li>
-            <span className="mono">03 / REVIEW</span>
-            <h4>Feedback in one place</h4>
-            <p>AI reports · Human evaluation</p>
-          </li>
-        </ol>
-        <p className="mono fyp-architecture">
-          NEXT.JS ↔ EXPRESS / MONGODB ↔ PYTHON AI
-        </p>
       </div>
     </article>
   );

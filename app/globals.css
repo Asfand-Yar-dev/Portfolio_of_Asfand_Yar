@@ -2365,87 +2365,9 @@ summary > .icon {
 }
 /* Each item enters, stays fully readable, then leaves as scrolling progresses. */
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .scroll-scene {
-      animation: scene-passage linear both;
-      animation-timeline: view(block);
-      animation-range: entry 0% exit 100%;
-    }
-    .scroll-scene:focus-within {
-      animation: none;
-    }
-  }
-}
-@keyframes scene-passage {
-  0% {
-    opacity: 0;
-    transform: translateY(72px) scale(0.965);
-  }
-  25%,
-  80% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-44px) scale(0.975);
-  }
-}
-@media (max-width: 600px) {
-  @keyframes scene-passage {
-    0% {
-      opacity: 0;
-      transform: translateY(38px);
-    }
-    20%,
-    85% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-26px);
-    }
-  }
-}
-@media print {
-  .scroll-scene {
-    animation: none !important;
-  }
 }
 /* The opening copy is already visible on arrival; it only exits as you scroll. */
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-copy.scroll-scene {
-      animation-name: scene-opening;
-      animation-range: exit 0% exit 100%;
-    }
-    .footer.scroll-scene {
-      animation-name: scene-ending;
-      animation-range: entry 0% entry 100%;
-    }
-  }
-}
-@keyframes scene-opening {
-  0%,
-  35% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-38px);
-  }
-}
-@keyframes scene-ending {
-  from {
-    opacity: 1;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 .fyp-project {
   display: grid;
@@ -2716,13 +2638,101 @@ summary > .icon {
   background: transparent;
   transition: color 300ms ease;
 }
-:root[data-theme="light"] .hero-social a { color: #355429; }
-.hero-social a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+:root[data-theme="light"] .hero-social a {
+  color: #355429;
+}
+.hero-social a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
 @media (hover: hover) and (pointer: fine) {
-  :root[data-theme="light"] .hero-social a:hover { color: #628649; }
+  :root[data-theme="light"] .hero-social a:hover {
+    color: #628649;
+  }
 }
 /* Keep shorter rotating titles next to the description on narrow layouts. */
 @media (max-width: 1100px) {
-  .hero .rotating-roles > span { align-self: end; }
-  .hero .hero-description { margin-top: 12px; }
+  .hero .rotating-roles > span {
+    align-self: end;
+  }
+  .hero .hero-description {
+    margin-top: 12px;
+  }
+}
+
+/* Single-line roles prevent reserved wrapping space on compact layouts. */
+@media (max-width: 1100px) {
+  .hero .rotating-roles {
+    font-size: clamp(20px, 2.8vw, 30px);
+    line-height: 1.25;
+  }
+  .hero .rotating-roles > span {
+    white-space: nowrap;
+    align-self: start;
+  }
+}
+@media (max-width: 600px) {
+  .hero .rotating-roles {
+    font-size: clamp(20px, 5.2vw, 28px);
+  }
+  .hero .hero-identity {
+    margin-bottom: 12px;
+  }
+}
+/* Focused links and expanded controls stay legible at the viewport boundary. */
+.edge-fade:focus-within {
+  mask-image: none !important;
+}
+@media print {
+  .edge-fade {
+    mask-image: none !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .edge-fade {
+    mask-image: none !important;
+    translate: none !important;
+  }
+}
+.fyp-project {
+  grid-template-rows: auto 1fr;
+}
+.fyp-project > .project-body {
+  grid-column: 1;
+  grid-row: 1;
+  padding-bottom: 8px;
+}
+.fyp-project > .fyp-workflow {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+.fyp-details {
+  grid-column: 1;
+  grid-row: 2;
+  padding: 0 32px 20px;
+}
+@media (max-width: 899px) {
+  .fyp-project > .project-body,
+  .fyp-project > .fyp-workflow,
+  .fyp-details {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .fyp-project > .project-body {
+    padding-bottom: 24px;
+  }
+  .fyp-details {
+    padding: 0 32px 16px;
+  }
+}
+@media (max-width: 600px) {
+  .fyp-details {
+    padding-inline: 20px;
+  }
+}
+/* Begin the lightweight core motion before hydration; the hook applies device/visibility controls. */
+@media (prefers-reduced-motion: no-preference) {
+  .compute-core[data-motion="pending"] .core-assembly {
+    animation-play-state: running;
+  }
 }

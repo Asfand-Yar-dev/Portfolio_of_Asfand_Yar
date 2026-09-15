@@ -11,6 +11,7 @@ export default function AnimatedDetails({ children }: { children: ReactNode }) {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
     let animation: Animation | undefined;
     let expanded = details.open;
+    let viewportWidth = window.innerWidth;
     const finish = () => {
       animation?.cancel();
       animation = undefined;
@@ -44,14 +45,20 @@ export default function AnimatedDetails({ children }: { children: ReactNode }) {
     const preferenceChange = () => {
       if (reduced.matches) finish();
     };
+    const resize = () => {
+      if (window.innerWidth !== viewportWidth) {
+        viewportWidth = window.innerWidth;
+        finish();
+      }
+    };
     summary.addEventListener("click", click);
     reduced.addEventListener("change", preferenceChange);
-    window.addEventListener("resize", finish);
+    window.addEventListener("resize", resize);
     return () => {
       finish();
       summary.removeEventListener("click", click);
       reduced.removeEventListener("change", preferenceChange);
-      window.removeEventListener("resize", finish);
+      window.removeEventListener("resize", resize);
     };
   }, []);
   return (
