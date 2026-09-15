@@ -1,8 +1,7 @@
 export default function sitemap() {
   return [
     {
-      url: "https://asfandyar.tech",
-      lastModified: new Date(),
+      url: "https://asfandyar.tech/",
       changeFrequency: "monthly",
       priority: 1,
     },

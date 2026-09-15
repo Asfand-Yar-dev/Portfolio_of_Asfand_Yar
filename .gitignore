@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/qa
 
 # next.js
 /.next/
@@ -40,3 +41,22 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# logs
+*.log
+
+# editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# linter cache
+.eslintcache
+
+# env exception (if needed)
+!.env.example

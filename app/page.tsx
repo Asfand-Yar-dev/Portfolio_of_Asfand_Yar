@@ -1,77 +1,78 @@
-"use client";
-
-import { lazy, Suspense, useState } from "react";
+import Header from "@/components/Header";
+import EngineeringBackground from "@/components/EngineeringBackground";
 import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Experience from "@/components/Experience";
+import Projects from "@/components/Projects";
+import Skills from "@/components/Skills";
+import Services from "@/components/Services";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+import ScrollExperience from "@/components/ScrollExperience";
+import { site } from "@/lib/site";
+import { projects } from "@/lib/content";
 
-const About = lazy(() => import("@/components/About"));
-const Experience = lazy(() => import("@/components/Experience"));
-const Skills = lazy(() => import("@/components/Skills"));
-const Projects = lazy(() => import("@/components/Projects"));
-const ServicesSection = lazy(() => import("@/components/Services"));
-const Contact = lazy(() => import("@/components/Contact"));
-const Footer = lazy(() => import("@/components/Footer"));
-
-const SectionLoader = () => (
-  <div className="flex justify-center items-center py-32">
-    <div className="flex gap-2">
-      {[0, 1, 2].map((i) => (
-        <div
-          key={i}
-          className="w-2 h-2 rounded-full bg-zinc-400 animate-bounce"
-          style={{ animationDelay: `${i * 0.15}s` }}
-        />
-      ))}
-    </div>
-  </div>
-);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${site.url}/#person`,
+      name: site.name,
+      url: site.url,
+      description: site.description,
+      sameAs: [site.github, site.linkedin],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site.url}/#website`,
+      url: site.url,
+      name: site.title,
+      inLanguage: "en",
+      publisher: { "@id": `${site.url}/#person` },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${site.url}/#profile`,
+      url: site.url,
+      name: site.title,
+      isPartOf: { "@id": `${site.url}/#website` },
+      mainEntity: { "@id": `${site.url}/#person` },
+    },
+    ...projects.slice(0, 2).map((project) => ({
+      "@type": "CreativeWork",
+      name: project.title,
+      description: project.description,
+      creator: { "@id": `${site.url}/#person` },
+    })),
+  ],
+};
 
 export default function Page() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleTheme = () => setIsDarkMode((prev) => !prev);
-
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <div className={`${isDarkMode ? "bg-[#09090b]" : "bg-[#fafafa]"}`}>
-      <Hero
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        scrollToSection={scrollToSection}
+    <>
+      <EngineeringBackground />
+      <ScrollExperience />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
       />
-
-      <Suspense fallback={<SectionLoader />}>
-        <About isDarkMode={isDarkMode} />
-      </Suspense>
-
-      <Suspense fallback={<SectionLoader />}>
-        <Experience isDarkMode={isDarkMode} />
-      </Suspense>
-
-      <Suspense fallback={<SectionLoader />}>
-        <Skills isDarkMode={isDarkMode} />
-      </Suspense>
-
-      <Suspense fallback={<SectionLoader />}>
-        <Projects isDarkMode={isDarkMode} />
-      </Suspense>
-
-      <Suspense fallback={<SectionLoader />}>
-        <ServicesSection isDarkMode={isDarkMode} />
-      </Suspense>
-
-      <Suspense fallback={<SectionLoader />}>
-        <Contact isDarkMode={isDarkMode} />
-      </Suspense>
-
-      <Suspense fallback={<SectionLoader />}>
-        <Footer isDarkMode={isDarkMode} scrollToSection={scrollToSection} />
-      </Suspense>
-    </div>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+      <Header />
+      <main id="main" tabIndex={-1}>
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Services />
+        <Contact />
+      </main>
+      <Footer />
+    </>
   );
 }

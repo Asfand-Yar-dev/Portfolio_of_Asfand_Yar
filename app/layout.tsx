@@ -1,48 +1,74 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { site } from "@/lib/site";
 import "./globals.css";
 
-
-// Outfit font config
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  display: "swap", // Add display swap for better font loading
+const outfit = localFont({
+  src: "../public/fonts/outfit-latin.woff2",
+  display: "swap",
+  variable: "--font-outfit",
+  weight: "100 900",
 });
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://asfandyar.tech"),
-  title: "Asfand Yar | AI-First Software Developer | GenAI Engineer", 
-  description: "Portfolio of Asfand Yar, an AI-First Software Developer and GenAI Engineer specializing in Generative AI, LLMs, RAG pipelines, AI agents, prompt engineering, and Python backend development.",
-  alternates:{
-    canonical: "/",
-  },
+  metadataBase: new URL(site.url),
+  title: site.title,
+  description: site.description,
+  alternates: { canonical: "/" },
   icons: {
-  icon: [
-    { url: "/favicon.ico" },
-    { url: "/favicon.png", type: "image/png" },
-  ],
-}
+    icon: [
+      { url: "/favicon.ico?v=ay-2", sizes: "16x16 32x32 48x48" },
+      { url: "/favicon.png?v=ay-2", type: "image/png", sizes: "64x64" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png?v=ay-2", sizes: "180x180" }],
+  },
+  openGraph: {
+    type: "website",
+    url: site.url,
+    title: site.title,
+    description: site.description,
+    siteName: "Asfand Yar — Portfolio",
+    locale: "en_US",
+    images: [
+      {
+        url: "/social-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Asfand Yar — Software, Backend & AI Engineering",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+    images: ["/social-preview.png"],
+  },
 };
 
+// Apply a saved preference before paint; private browsers may disable storage.
+const themeScript = `try{var t=localStorage.getItem('portfolio-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){}`;
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
-        {/* Preload critical images */}
-        <link rel="preload" as="image" href="/logo.svg" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${outfit.className} antialiased`}>
+      <body className={outfit.variable}>
         {children}
-        <Analytics />
-        <SpeedInsights />
+        {process.env.VERCEL === "1" && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   );
 }
+
